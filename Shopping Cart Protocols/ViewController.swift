@@ -12,7 +12,7 @@ import Firebase
 
 class ViewController: UIViewController {
   
-  let databaseReference = FIRDatabase.database().reference().child("items")
+  let databaseReference = FIRDatabase.database().reference().child("shoppingCartItems")
   var databaseObserver: FIRDatabaseHandle?
   
   override func viewDidLoad() {
@@ -22,9 +22,16 @@ class ViewController: UIViewController {
     setupViewHierarchy()
     configureConstraints()
     
-    setObserver()
-    testAddingAnItem()
+    loginAnonymously()
+//    setObserver()
+//    testAddingAnItem()
   }
+    
+    private func loginAnonymously() {
+        FIRAuth.auth()?.signInAnonymously(completion: { (user: FIRUser?, error: Error?) in
+            print("Signed in anonymously!")
+        })
+    }
   
   private func setObserver() {
     databaseObserver = databaseReference.observe(.childAdded, with: { (snapshot: FIRDataSnapshot) in
